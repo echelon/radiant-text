@@ -2,8 +2,8 @@
 name = "radiant-text"
 version = "0.0.1"
 dependencies = [
- "etherdream 0.0.4",
- "ilda 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "etherdream 0.0.5",
+ "ilda 0.0.2",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -19,12 +19,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "etherdream"
-version = "0.0.4"
+version = "0.0.5"
 dependencies = [
  "byteorder 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "ilda 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "net2 0.2.26 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "ilda"
+version = "0.0.2"
+dependencies = [
+ "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
