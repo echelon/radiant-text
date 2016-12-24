@@ -2,8 +2,8 @@
 name = "radiant-text"
 version = "0.0.1"
 dependencies = [
- "etherdream 0.0.5",
- "ilda 0.0.2",
+ "etherdream 0.0.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "ilda 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -20,6 +20,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "etherdream"
 version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "byteorder 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "ilda 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -30,13 +31,14 @@ dependencies = [
 [[package]]
 name = "ilda"
 version = "0.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "ilda"
-version = "0.0.2"
+version = "0.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -95,7 +97,9 @@ dependencies = [
 [metadata]
 "checksum byteorder 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)" = "0fc10e8cc6b2580fda3f36eb6dc5316657f812a3df879a44a66fc9f0fdbc4855"
 "checksum cfg-if 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "de1e760d7b6535af4241fca8bd8adf68e2e7edacc6b29f5d399050c5e48cf88c"
+"checksum etherdream 0.0.5 (registry+https://github.com/rust-lang/crates.io-index)" = "5be1245e16c003e9bb23fc5cbe4081d3ead33e51cda62b286a80508fba0af0f0"
 "checksum ilda 0.0.2 (registry+https://github.com/rust-lang/crates.io-index)" = "3a1e7b293fd4994d9867ee7cda7345dd40af1aee181e9881c26ca975f2aabced"
+"checksum ilda 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)" = "27c1d54f6c13a7db1d595277776bdf562036585439d5bc2a46fdda826252748d"
 "checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
 "checksum libc 0.2.18 (registry+https://github.com/rust-lang/crates.io-index)" = "a51822fc847e7a8101514d1d44e354ba2ffa7d4c194dcab48870740e327cac70"
 "checksum log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)" = "ab83497bf8bf4ed2a74259c1c802351fcd67a65baa86394b6ba73c36f4838054"
