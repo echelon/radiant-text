@@ -20,15 +20,22 @@ fn main() {
   println!("Reading ILDA file...");
   println!("{}, {}", etherdream::protocol::X_MAX, etherdream::protocol::X_MIN);
 
-  let filename = "./ild/datboi.ild";
-  //let filename = "./ild/koolaidman.ild";
+  let filename = "./ild/datboi.ild"; // Works
+  let filename = "./ild/cogz99.ild"; // Works (animated)
+  let filename = "./ild/font_impact.ild"; // Works
+  let filename = "./ild/font_lucida.ild"; // Works
+  let filename = "./ild/thunda2.ild"; // Works (animated)
+  //let filename = "./ild/koolaidman.ild"; // TODO: Doesn't render correctly?
 
-  let animation = Animation::read_file(filename).unwrap();
+  let animation = match Animation::read_file(filename) {
+    Ok(animation) => animation,
+    Err(e) => {
+      println!("Error: {:?}", e);
+      panic!();
+    },
+  };
 
   println!("Animation Len: {}", &animation.frame_count());
-
-  let points = read_points(filename).ok().unwrap();
-  //let mut iterators = PointIterators { frame: None, point: None };
 
   println!("Searching for EtherDream DAC...");
   let search_result = etherdream::network::find_first_dac().unwrap();
@@ -39,6 +46,7 @@ fn main() {
   let mut dac = Dac::new(ip_address);
 
   let mut frame_index = 0;
+  let mut frame_repeat_count = 0;
   let mut point_index = 0;
 
   // TODO: Draw something interesting.
@@ -56,7 +64,12 @@ fn main() {
         Some(ref frame) => {
           match frame.get_point(point_index) {
             None => {
-              frame_index += 1;
+              // NB: Repeat slows the animation speed.
+              frame_repeat_count += 1;
+              if frame_repeat_count > 2 {
+                frame_index += 1;
+                frame_repeat_count = 0;
+              }
               point_index = 0;
               continue;
             },
@@ -71,37 +84,6 @@ fn main() {
 
     buf
   });
-}
-
-// TODO: Error class
-fn read_points(filename: &str) -> Result<Vec<Point>, ilda::IldaError> {
-  let headers = read_file(filename)?;
-  let mut points = Vec::new();
-
-  let mut count = 0;
-  for header in headers {
-    match header {
-      /*IldaEntry::HeaderEntry(h) => {
-        println!("HEADER: {:?}", h);
-        count += 1;
-        if count > 1 {
-          break;
-        }
-      },*/
-      IldaEntry::TcPoint2dEntry(pt) => {
-        let point = Point::xy_rgb(pt.x, pt.y, color(pt.g), color(pt.b), color(pt.r));
-        //let point = Point::xy_binary(pt.x, pt.y, true);
-        points.push(point);
-      },
-      IldaEntry::TcPoint3dEntry(_) => {
-        println!("3D point unsupported")
-      }
-      _ => {
-        println!("UNSUPPORTED");
-      },
-    }
-  }
-  Ok(points)
 }
 
 /// Map the color ranges.
