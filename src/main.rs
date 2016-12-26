@@ -4,17 +4,23 @@
 extern crate etherdream;
 extern crate ilda;
 
-use std::sync::Arc;
-use std::boxed::Box;
+mod error;
+mod font;
+
 use etherdream::dac::Dac;
 use etherdream::protocol::COLOR_MAX;
 use etherdream::protocol::Point;
 use etherdream::protocol::X_MAX;
 use etherdream::protocol::Y_MAX;
+use font::IldaFont;
+use font::get_narrow_font;
+use font::get_simple_font;
 use ilda::animation::Animation;
 use ilda::animation::Frame;
 use ilda::data::IldaEntry;
 use ilda::parser::read_file;
+use std::boxed::Box;
+use std::sync::Arc;
 
 fn main() {
   println!("Reading ILDA file...");
@@ -34,7 +40,10 @@ fn main() {
   let filename = "./ild/font_simple_vector.ild";
   //let filename = "./ild/koolaidman.ild"; // TODO: Doesn't render correctly?
 
+  let font = get_simple_font().ok().unwrap();
+
   let animation = Animation::read_file(filename).unwrap();
+
   /*let animation = match Animation::read_file(filename) {
     Ok(animation) => animation,
     Err(e) => {
@@ -57,11 +66,37 @@ fn main() {
   let mut frame_repeat_count = 0;
   let mut point_index = 0;
 
-  // TODO: Draw something interesting.
   dac.play_function(move |num_points: u16| {
     let limit = num_points as usize;
     let mut buf = Vec::new();
+    let frame = font.get_char_frame('6').unwrap();
 
+    while buf.len() < limit {
+      match frame.get_point(point_index) {
+        None => {
+          point_index = 0;
+          continue;
+        },
+        Some(ref point) => {
+          println!("Point : {}", point_index);
+          let r = color(point.r);
+          let g = color(point.g);
+          let b = color(point.b);
+          buf.push(Point::xy_rgb(point.x, point.y, r, g, b));
+          point_index += 1;
+        },
+      }
+    }
+
+    buf
+  });
+
+  // TODO: Draw something interesting.
+  /*dac.play_function(move |num_points: u16| {
+    let limit = num_points as usize;
+    let mut buf = Vec::new();
+
+    let animation = font.get_animation();
     while buf.len() < limit {
       match animation.get_frame(frame_index) {
         None => {
@@ -82,6 +117,7 @@ fn main() {
               continue;
             },
             Some(ref point) => {
+              println!("Frame: {}", frame_index);
               let r = color(point.r);
               let g = color(point.g);
               let b = color(point.b);
@@ -94,7 +130,7 @@ fn main() {
     }
 
     buf
-  });
+  });*/
 }
 
 /// Map the color ranges.
