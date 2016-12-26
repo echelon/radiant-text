@@ -25,15 +25,23 @@ fn main() {
   let filename = "./ild/font_impact.ild"; // Works
   let filename = "./ild/font_lucida.ild"; // Works
   let filename = "./ild/thunda2.ild"; // Works (animated)
+  let filename = "./ild/Charmander.ild";
+  let filename = "./ild/nyancat.ild"; // Works!! :D
+  let filename = "./ild/formatt.ild"; // Fails on header read
+  let filename = "./ild/in.ild"; // WTF is this
+  let filename = "./ild/Skittles.ILD"; // Fails to render
+  let filename = "./ild/font_narrow_vector.ild";
+  let filename = "./ild/font_simple_vector.ild";
   //let filename = "./ild/koolaidman.ild"; // TODO: Doesn't render correctly?
 
-  let animation = match Animation::read_file(filename) {
+  let animation = Animation::read_file(filename).unwrap();
+  /*let animation = match Animation::read_file(filename) {
     Ok(animation) => animation,
     Err(e) => {
       println!("Error: {:?}", e);
       panic!();
     },
-  };
+  };*/
 
   println!("Animation Len: {}", &animation.frame_count());
 
@@ -66,7 +74,7 @@ fn main() {
             None => {
               // NB: Repeat slows the animation speed.
               frame_repeat_count += 1;
-              if frame_repeat_count > 2 {
+              if frame_repeat_count > 20_000 {
                 frame_index += 1;
                 frame_repeat_count = 0;
               }
@@ -74,7 +82,10 @@ fn main() {
               continue;
             },
             Some(ref point) => {
-              buf.push(Point::xy_binary(point.x, point.y, true));
+              let r = color(point.r);
+              let g = color(point.g);
+              let b = color(point.b);
+              buf.push(Point::xy_rgb(point.x, point.y, r, g, b));
               point_index += 1;
             }
           }
